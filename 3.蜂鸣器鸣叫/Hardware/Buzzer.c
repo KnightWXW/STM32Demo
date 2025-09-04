@@ -1,5 +1,9 @@
 #include "stm32f10x.h"
 
+/*
+    蜂鸣器的触发方式为 低电平触发
+*/
+
 /**
  * @description: 蜂鸣器初始化
  * @param {uint16_t} GPIO_Pin
