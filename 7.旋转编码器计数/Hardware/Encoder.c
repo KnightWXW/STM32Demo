@@ -31,6 +31,7 @@ void Encoder_EXTI_Init(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
     // AFIO选择中断引脚
+    // 此函数不可以使用 | 同时配置两个引脚
     GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource0); // 将外部中断的0号线映射到GPIOB,即选择PB0为外部中断引脚
     GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource1); // 将外部中断的1号线映射到GPIOB,即选择PB1为外部中断引脚
 
