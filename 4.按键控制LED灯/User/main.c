@@ -7,8 +7,8 @@ uint16_t num; // 按键键码值
 
 int main(void)
 {
-	LED_Init(GPIO_Pin_1);
-	Key_Init(GPIO_Pin_1);
+	LED_Init(GPIO_Pin_1); // 初始化LED模块
+	Key_Init(GPIO_Pin_1); // 初始化按键模块
 	while (1)
 	{
 		num = Key_GetNum(GPIOB, GPIO_Pin_1);

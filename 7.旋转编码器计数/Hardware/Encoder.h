@@ -3,6 +3,6 @@
 
 void Encoder_Init(uint16_t GPIO_Pin);
 void Encoder_EXTI_Init(void);
-uint8_t Encoder_GetNum();
+int16_t Encoder_GetNum();
 
 #endif

@@ -5,8 +5,8 @@
 
 int main(void)
 {
-	Buzzer_Init(GPIO_Pin_0);
-	Sensor_Init(GPIO_Pin_10);
+	Buzzer_Init(GPIO_Pin_0);  // 初始化蜂鸣器模块
+	Sensor_Init(GPIO_Pin_10); // 初始化红外对射传感器模块
 	while (1)
 	{
 		uint8_t num = Sensor_GetNum(GPIOA, GPIO_Pin_10); // 获取光敏传感器当前状态

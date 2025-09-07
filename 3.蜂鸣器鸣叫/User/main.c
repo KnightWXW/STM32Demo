@@ -4,7 +4,7 @@
 
 int main(void)
 {
-	Buzzer_Init(GPIO_Pin_0);
+	Buzzer_Init(GPIO_Pin_0);  // 初始化蜂鸣器模块
 	while (1)
 	{
 		Buzzer_ON(GPIOB, GPIO_Pin_0);

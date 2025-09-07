@@ -8,12 +8,12 @@ int16_t encoderCnt = 0; // 旋转计数器计数
 
 int main(void)
 {
-	OLED_Init();
+	OLED_Init();						   // 初始化OLED模块
 	Key_Init(GPIO_Pin_10);				   // 初始化按键模块
 	Encoder_Init(GPIO_Pin_0 | GPIO_Pin_1); // 初始化旋转计数器模块
 	Encoder_EXTI_Init();				   // 初始化旋转计数器外部中断模块
 
-	OLED_ShowString(1, 1, "Count:"); // 1行1列显示字符串Count:
+	OLED_ShowString(1, 1, "Count:"); // 显示字符串Count:
 	while (1)
 	{
 		uint16_t keyNum = Key_GetNum(GPIOB, GPIO_Pin_10);
