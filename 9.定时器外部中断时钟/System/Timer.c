@@ -5,6 +5,7 @@ extern uint16_t timerCnt; // 定时器计数
 /**
  * @description: 定时器初始化
  * @return: {*}
+ *  TIM2对应的外部时钟源通道(TIM2_CH1_ETR)对应的引脚为 PA0
  */
 void Timer_Init(void)
 {
