@@ -14,6 +14,7 @@ void PWM_Init(void)
     TIM_InternalClockConfig(TIM2);
 
     // 配置时基单元
+    // 直流电机PWM输出频率选择为 20K Hz, 超过人耳接收频率(20Hz--20KHz),防止堵转
     TIM_TimeBaseInitTypeDef timBaseStructure;
     timBaseStructure.TIM_Prescaler = 36 - 1;             // 预分频器,即PSC的值
     timBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 计数器模式,选择向上计数

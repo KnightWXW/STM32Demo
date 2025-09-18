@@ -14,6 +14,7 @@ void PWM_Init(void)
     TIM_InternalClockConfig(TIM2);
 
     // 配置时基单元
+    // 舵机的工作频率 50Hz, 对应ARR为 20000 - 1
     TIM_TimeBaseInitTypeDef timBaseStructure;
     timBaseStructure.TIM_Prescaler = 72 - 1;               // 预分频器,即PSC的值
     timBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // 计数器模式,选择向上计数
