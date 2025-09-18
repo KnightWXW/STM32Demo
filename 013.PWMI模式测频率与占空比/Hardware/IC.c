@@ -32,13 +32,16 @@ void IC_Init(uint16_t GPIO_Pin)
     TIM_TimeBaseInit(TIM3, &timBaseStructure);
 
     // PWMI模式初始化
+    // TIM_PWMIConfig: 可以 同时 配置 两个通道
+    // TIM_ICInit: 只能 一次配置 一个通道
     TIM_ICInitTypeDef icInitStructure;
     icInitStructure.TIM_Channel = TIM_Channel_1;                // 选择配置定时器通道1
-    icInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;     // 极性，选择为上升沿触发捕获
-    icInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI; // 输入信号交叉，选择直通，不交叉
-    icInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;           // 捕获预分频，选择不分频，每次信号都触发捕获
-    icInitStructure.TIM_ICFilter = 0xF;                         // 输入滤波器参数，可以过滤信号抖动
-    TIM_PWMIConfig(TIM3, &icInitStructure);
+    icInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;     // 极性,选择为上升沿触发捕获
+    icInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI; // 输入信号交叉,选择直通,不交叉
+    icInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;           // 捕获预分频,选择不分频,每次信号都触发捕获
+    icInitStructure.TIM_ICFilter = 0xF;                         // 输入滤波器参数,可以过滤信号抖动
+    TIM_PWMIConfig(TIM3, &icInitStructure);                     // 将结构体变量交给TIM_PWMIConfig，配置TIM3的输入捕获通道
+                                                                // 此函数同时会把另一个通道配置为相反的配置，实现PWMI模式
 
     // 选择触发源及从模式
     TIM_SelectInputTrigger(TIM3, TIM_TS_TI1FP1);    // 触发源选择TI1FP1
@@ -54,7 +57,7 @@ void IC_Init(uint16_t GPIO_Pin)
  */
 uint32_t IC_GetFreq(void)
 {
-    // 测周法得到频率 fx = fc / N, 这里不执行+1的操作也可以
+    // 测周法得到频率 fx = fc / N, 这里不执行 +1 的操作也可以
     return 1000000 / (TIM_GetCapture1(TIM3) + 1);
 }
 
@@ -66,6 +69,6 @@ uint32_t IC_GetDuty(void)
 {
     // CCR2 存储 高电平计数
     // CCR1 存储 满周期计数
-    // 占空比 Duty = CCR2 / CCR1 * 100, 不执行+1的操作也可
+    // 占空比 Duty = CCR2 / CCR1 * 100, 不执行 +1 的操作也可
     return (TIM_GetCapture2(TIM3) + 1) * 100 / (TIM_GetCapture1(TIM3) + 1);
 }

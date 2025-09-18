@@ -57,12 +57,12 @@ void Encoder_EXTI_Init(void)
     nvicStructure.NVIC_IRQChannel = EXTI0_IRQn;          // 选择配置NVIC的 EXTI9_5 通道
     nvicStructure.NVIC_IRQChannelPreemptionPriority = 1; // 指定NVIC线路的抢占优先级为2
     nvicStructure.NVIC_IRQChannelSubPriority = 1;        // 指定NVIC线路的响应优先级为2
-    nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // NVIC外设初始化
+    nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
     NVIC_Init(&nvicStructure);
     nvicStructure.NVIC_IRQChannel = EXTI1_IRQn;          // 选择配置NVIC的 EXTI9_5 通道
     nvicStructure.NVIC_IRQChannelPreemptionPriority = 2; // 指定NVIC线路的抢占优先级为2
     nvicStructure.NVIC_IRQChannelSubPriority = 2;        // 指定NVIC线路的响应优先级为2
-    nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // NVIC外设初始化
+    nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
     NVIC_Init(&nvicStructure);
 }
 

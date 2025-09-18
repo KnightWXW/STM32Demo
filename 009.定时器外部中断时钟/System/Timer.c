@@ -46,10 +46,10 @@ void Timer_Init(void)
 
     // NVIC初始化
     NVIC_InitTypeDef nvicStructure;
-    nvicStructure.NVIC_IRQChannel = TIM2_IRQn;
-    nvicStructure.NVIC_IRQChannelPreemptionPriority = 2;
-    nvicStructure.NVIC_IRQChannelSubPriority = 1;
-    nvicStructure.NVIC_IRQChannelCmd = ENABLE;
+    nvicStructure.NVIC_IRQChannel = TIM2_IRQn;           // 选择配置NVIC的TIM2线
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 2; // 指定NVIC线路的抢占优先级为2
+    nvicStructure.NVIC_IRQChannelSubPriority = 1;        // 指定NVIC线路的响应优先级为1
+    nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
     NVIC_Init(&nvicStructure);
 
     // 定时器使能
