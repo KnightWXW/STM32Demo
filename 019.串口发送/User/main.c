@@ -15,9 +15,9 @@ int main(void)
 	uint8_t MyArray[] = {0x42, 0x43, 0x44, 0x45}; // 定义数组
 	Serial_SendArray(MyArray, 4);				  // 串口发送一个数组
 	// (3) 发送字节数据
-	Serial_SendString("\r\nNum1="); // 串口发送字符串
+	Serial_SendString("\r\nNum="); // 串口发送字符串
 	// (4) 发送字节数据
-	Serial_SendNumber(111, 3); // 串口发送数字
+	Serial_SendNumber(123, 3); // 串口发送数字
 
 	while (1)
 	{
