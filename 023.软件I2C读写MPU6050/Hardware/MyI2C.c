@@ -32,9 +32,9 @@ void MyI2C_W_SDA(uint16_t GPIO_Pin, uint8_t BitValue)
  */
 uint8_t MyI2C_R_SDA(uint16_t GPIO_Pin)
 {
-    uint8_t bitValue = GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin);
+    uint8_t BitValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin);
     Delay_us(10);
-    return bitValue;
+    return BitValue;
 }
 
 /**
@@ -122,7 +122,7 @@ uint8_t MyI2C_ReceiveByte(uint16_t GPIO_Pin_SCL, uint16_t GPIO_Pin_SDA)
         {
             ReceiveByte |= (0x80 >> i);
         }
-        MyI2C_W_SCL(GPIO_Pin_SCL, 1); // 拉低SCL,从机在SCL低电平期间写入SDA
+        MyI2C_W_SCL(GPIO_Pin_SCL, 0); // 拉低SCL,从机在SCL低电平期间写入SDA
     }
     return ReceiveByte;
 }
@@ -150,10 +150,10 @@ void MyI2C_SendAck(uint16_t GPIO_Pin_SCL, uint16_t GPIO_Pin_SDA, uint8_t AckBit)
  */
 uint8_t MyI2C_ReceiveAck(uint16_t GPIO_Pin_SCL, uint16_t GPIO_Pin_SDA)
 {
-    uint8_t ReceiveACK = 0x00;              // 定义应答位变量
+    uint8_t ReceiveACK;                     // 定义应答位变量
     MyI2C_W_SDA(GPIO_Pin_SDA, 1);           // 接收前，主机先确保释放SDA，避免干扰从机的数据发送
     MyI2C_W_SCL(GPIO_Pin_SCL, 1);           // 释放SCL，主机机在SCL高电平期间读取SDA
     ReceiveACK = MyI2C_R_SDA(GPIO_Pin_SDA); // 将应答位存储到变量里
-    MyI2C_W_SCL(GPIO_Pin_SCL, 1);           // 拉低SCL，开始下一个时序模块
+    MyI2C_W_SCL(GPIO_Pin_SCL, 0);           // 拉低SCL，开始下一个时序模块
     return ReceiveACK;                      // 返回定义应答位变量
 }
