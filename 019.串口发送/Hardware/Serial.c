@@ -1,4 +1,6 @@
 #include "stm32f10x.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 /**
  * @description: 串口初始化
