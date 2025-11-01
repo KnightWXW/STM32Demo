@@ -12,8 +12,5 @@ void Serial_SendArray(uint8_t *Array, uint16_t Length);
 void Serial_SendString(char *String);
 void Serial_SendNumber(uint32_t Number, uint8_t Length);
 void Serial_Printf(char *format, ...);
-// USART收发数据包
-void Serial_SendPacket(void);
-uint8_t Serial_GetRxFlag(void);
 
 #endif

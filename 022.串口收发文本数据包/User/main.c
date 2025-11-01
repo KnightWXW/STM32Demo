@@ -2,9 +2,9 @@
 #include "OLED.h"
 #include "LED.h"
 #include "Serial.h"
+#include "string.h"
 
-uint8_t KeyNum; // 接收按键键码的变量
-
+// 进行验证测试时,发送区命令要进行换行
 int main(void)
 {
 	OLED_Init();						  // 初始化 OLED模块
@@ -27,7 +27,7 @@ int main(void)
 			// 点亮LED,串口回传一个字符串LED_ON_OK,OLED清除指定位置，并显示LED_ON_OK
 			if (strcmp(Serial_RxPacket, "LED_ON") == 0)
 			{
-				LED1_ON();
+				LED_ON(GPIOA, GPIO_Pin_1);
 				Serial_SendString("LED_ON_OK\r\n");
 				OLED_ShowString(2, 1, "                ");
 				OLED_ShowString(2, 1, "LED_ON_OK");
@@ -36,7 +36,7 @@ int main(void)
 			// 熄灭LED,串口回传一个字符串LED_OFF_OK,OLED清除指定位置，并显示LED_OFF_OK
 			else if (strcmp(Serial_RxPacket, "LED_OFF") == 0)
 			{
-				LED1_OFF();
+				LED_OFF(GPIOA, GPIO_Pin_1);
 				Serial_SendString("LED_OFF_OK\r\n");
 				OLED_ShowString(2, 1, "                ");
 				OLED_ShowString(2, 1, "LED_OFF_OK");

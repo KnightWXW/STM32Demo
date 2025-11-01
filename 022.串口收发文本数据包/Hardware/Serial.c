@@ -1,4 +1,4 @@
-#include "stm32f10x.h"
+#include "stm32f10x.h" // Device header
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -6,7 +6,9 @@ char Serial_RxPacket[100]; // 定义接收数据包数组,数据包格式"@MSG\r
 uint8_t Serial_RxFlag;     // 定义接收数据包标志位
 
 /**
- * @description: 串口初始化
+ * @description: Serial初始化
+ * @param {uint16_t} GPIO_Pin_IN
+ * @param {uint16_t} GPIO_Pin_OUT
  * @return: {*}
  */
 void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
@@ -40,8 +42,9 @@ void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
 
     // 串口接收可使用查询与接收两种方式
     // 若使用中断需要,需配置NVIC
-    // 开启更新中断// 开启USART接收数据的中断
-    TIM_ITConfig(TIM3, USART_IT_RXNE, ENABLE);
+    // 开启更新中断
+	// 开启USART接收数据的中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
     // NVIC配置中断优先级
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -49,7 +52,7 @@ void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
     // NVIC初始化
     NVIC_InitTypeDef nvicStructure;
     nvicStructure.NVIC_IRQChannel = USART1_IRQn;         // 选择配置NVIC的TIM3线
-    nvicStructure.NVIC_IRQChannelPreemptionPriority = 2; // 指定NVIC线路的抢占优先级为2
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 1; // 指定NVIC线路的抢占优先级为2
     nvicStructure.NVIC_IRQChannelSubPriority = 1;        // 指定NVIC线路的响应优先级为1
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
     NVIC_Init(&nvicStructure);
@@ -68,8 +71,7 @@ void Serial_SendByte(uint8_t Byte)
     // 将字节数据写入数据寄存器，写入后USART自动生成时序波形
     USART_SendData(USART1, Byte);
     // 等待发送完成
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-        ;
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
     // 下次写入数据寄存器会自动清除发送完成标志位，故此循环后，无需清除标志位
 }
 
@@ -159,36 +161,6 @@ void Serial_Printf(char *format, ...)
     Serial_SendString(String);     // 串口发送字符数组（字符串）
 }
 
-/**
- * @description: USART发送数据包
- * @return: {*}
- * 数据包发送内容: 包头(FF) + Serial_TxPacket数组 + 包尾(FE)
- */
-void Serial_SendPacket(void)
-{
-    Serial_SendByte(0xFF);
-    Serial_SendArray(Serial_TxPacket, 4);
-    Serial_SendByte(0xFE);
-}
-
-/**
- * @description: USART获取接受数据包标志位
- * @return: {*}
- * 接收到数据包后:标志位置1,
- * 读取后:标志位自动清0
- */
-uint8_t Serial_GetRxFlag(void)
-{
-    // 如果标志位为1,则返回1,并自动清零标志位
-    if (Serial_RxFlag == 1)
-    {
-        Serial_RxFlag = 0;
-        return 1;
-    }
-    // 如果标志位为0,则返回0
-    return 0;
-}
-
 void USART1_IRQHandler(void)
 {
     static uint8_t RxState = 0;   // 当前状态机状态(静态变量)
@@ -233,8 +205,8 @@ void USART1_IRQHandler(void)
             if (RxData == '\n')
             {
                 RxState = 0;
-                Serial_RxFlag = 1;
                 Serial_RxPacket[pRxPacket] = '\0';
+				Serial_RxFlag = 1;
             }
         }
         // 清除标志位

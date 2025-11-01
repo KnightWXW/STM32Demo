@@ -8,6 +8,8 @@ uint8_t Serial_RxFlag;      // 定义接收数据包标志位
 
 /**
  * @description: 串口初始化
+ * @param {uint16_t} GPIO_Pin_IN
+ * @param {uint16_t} GPIO_Pin_OUT
  * @return: {*}
  */
 void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
@@ -41,8 +43,8 @@ void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
 
     // 串口接收可使用查询与接收两种方式
     // 若使用中断需要,需配置NVIC
-    // 开启更新中断// 开启USART接收数据的中断
-    TIM_ITConfig(TIM3, USART_IT_RXNE, ENABLE);
+    // 开启更新中断,开启USART接收数据的中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
     // NVIC配置中断优先级
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -50,7 +52,7 @@ void Serial_Init(uint16_t GPIO_Pin_IN, uint16_t GPIO_Pin_OUT)
     // NVIC初始化
     NVIC_InitTypeDef nvicStructure;
     nvicStructure.NVIC_IRQChannel = USART1_IRQn;         // 选择配置NVIC的TIM3线
-    nvicStructure.NVIC_IRQChannelPreemptionPriority = 2; // 指定NVIC线路的抢占优先级为2
+    nvicStructure.NVIC_IRQChannelPreemptionPriority = 1; // 指定NVIC线路的抢占优先级为1
     nvicStructure.NVIC_IRQChannelSubPriority = 1;        // 指定NVIC线路的响应优先级为1
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
     NVIC_Init(&nvicStructure);
@@ -202,7 +204,7 @@ void USART1_IRQHandler(void)
         if (RxState == 0)
         {
             // 如果数据确实是包头:
-            //  置下一个状态(1),数据包的位置归零
+            // 置下一个状态(1),数据包的位置归零
             if (RxData == 0xFF)
             {
                 RxState = 1;
@@ -225,7 +227,7 @@ void USART1_IRQHandler(void)
         else if (RxState == 2)
         {
             // 如果数据确实是包尾:
-            //  置下一个状态(0),接收数据包标志位置1,成功接收一个数据包
+            // 置下一个状态(0),接收数据包标志位置1,成功接收一个数据包
             if (RxData == 0xFE)
             {
                 RxState = 0;

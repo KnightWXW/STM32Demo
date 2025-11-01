@@ -3,7 +3,7 @@
 #include "Key.h"
 #include "Serial.h"
 
-uint8_t KeyNum; // 接收按键键码的变量
+uint8_t KeyNum; // 接收按键键码
 
 int main(void)
 {
